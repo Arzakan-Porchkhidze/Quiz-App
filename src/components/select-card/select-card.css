@@ -1,0 +1,70 @@
+.select-card {
+	display: flex;
+}
+
+label {
+	display: flex;
+	align-items: center;
+	font-size: 2rem;
+}
+.diff-span,
+.category-span {
+	margin-right: 5px;
+}
+
+select {
+	min-width: 150px;
+	border: none;
+	border-radius: 10px;
+	outline: none;
+	font-size: 1.2rem;
+	padding: 1rem 1rem;
+	background: #e38100;
+	color: white;
+	appearance: none;
+	cursor: pointer;
+}
+.custom-select {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+
+.custom-arrow {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: block;
+	background: #805101;
+	height: 100%;
+	width: 2rem;
+	border-radius: 0px 10px 10px 0px;
+	pointer-events: none;
+}
+
+.custom-arrow::before,
+.custom-arrow::after {
+	--size: 1rem;
+
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.custom-arrow::before {
+	border-left: var(--size) solid transparent;
+	border-right: var(--size) solid transparent;
+	border-bottom: var(--size) solid #383838;
+	top: 30%;
+}
+
+.custom-arrow::after {
+	border-left: var(--size) solid transparent;
+	border-right: var(--size) solid transparent;
+	border-top: var(--size) solid #383838;
+	top: 70%;
+}
