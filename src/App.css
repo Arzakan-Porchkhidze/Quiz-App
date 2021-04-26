@@ -71,6 +71,12 @@
 	font-size: 48px;
 	letter-spacing: 0.3rem;
 }
+
+.error {
+	color: white;
+	letter-spacing: 0.2rem;
+}
+
 .loading-spinner {
 	margin-top: 100px;
 	display: inline-block;

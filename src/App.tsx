@@ -6,19 +6,14 @@ import "./App.css";
 import SelectCard from "./components/select-card/select-card";
 import QuestionCard from "./components/question-card/question-card";
 
-//utils
-import { shuffleArray } from "./utils";
+//API Call
+import { fetchQestions } from "./API";
+
+//interfaces
+import { AnswerObject, QuestionsState } from "./interfaces";
 
 //question amount
 const TOTAL_QUESTIONS = 10;
-
-//answer object
-export interface AnswerObject {
-	question: string;
-	answer: string;
-	correct: boolean;
-	correctAnswer: string;
-}
 
 const App: React.FC = () => {
 	//states
@@ -31,38 +26,17 @@ const App: React.FC = () => {
 	const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
 	const [restart, setRestart] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string>("");
 
-	interface Question {
-		category: string;
-		correct_answer: string;
-		difficulty: string;
-		incorrect_answers: string[];
-		question: string;
-		type: string;
-	}
-
-	interface QuestionsState extends Question {
-		answers: string[];
-	}
-
-	const fetchQestions = async () => {
-		const url = `https://opentdb.com/api.php?amount=10${
-			selectedCategory ? `&category=${selectedCategory}` : ""
-		}&difficulty=${selectedDifficulty}&type=multiple`;
-		const data = await (await fetch(url)).json();
-		return data.results.map((question: Question) => ({
-			...question,
-			answers: shuffleArray([
-				...question.incorrect_answers,
-				question.correct_answer,
-			]),
-		}));
-	};
+	// API URL
+	const url = `https://opentdb.com/api.php?amount=10${
+		selectedCategory ? `&category=${selectedCategory}` : ""
+	}&difficulty=${selectedDifficulty}&type=multiple`;
 
 	const startQuiz = async () => {
 		setLoading(true);
 		setGameOver(false);
-		const newQuestions = await fetchQestions();
+		const newQuestions = await fetchQestions(setError, setGameOver, url);
 		setQuestions(newQuestions);
 		setScore(0);
 		setquestionNumber(0);
@@ -134,8 +108,11 @@ const App: React.FC = () => {
 					</button>
 				</>
 			)}
-			{!gameOver && !restart ? <p className="score">Score: {score}</p> : null}
+			{!gameOver && !restart && !loading ? (
+				<p className="score">Score: {score}</p>
+			) : null}
 			{loading ? <div className="loading-spinner"></div> : null}
+			{gameOver && error ? <h1 className="error">{error}</h1> : null}
 			{!gameOver && restart ? (
 				<h2 className="final-score">Your score was {score}</h2>
 			) : null}

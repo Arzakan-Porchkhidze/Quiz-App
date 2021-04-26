@@ -3,7 +3,7 @@ import React from "react";
 import "./question-card.css";
 
 //interface
-import { AnswerObject } from "../../App";
+import { AnswerObject } from "../../interfaces";
 
 interface QuizProps {
 	question: string;
