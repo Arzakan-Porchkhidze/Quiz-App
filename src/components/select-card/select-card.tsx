@@ -33,7 +33,7 @@ const SelectCard: React.FC<Props> = ({
 	return (
 		<div className="select-card">
 			<div className="custom-select">
-				<label className="difficulity">
+				<label>
 					<span className="diff-span">difficulty:</span>
 					<select value={selectedDifficulty} onChange={selectDifficulty}>
 						<option value="easy">Easy</option>
@@ -44,7 +44,7 @@ const SelectCard: React.FC<Props> = ({
 				</label>
 			</div>
 			<div className="custom-select">
-				<label className="category">
+				<label>
 					<span className="category-span">category:</span>
 					<select value={selectedCategory} onChange={selectCategory}>
 						<option value="">Any Category</option>

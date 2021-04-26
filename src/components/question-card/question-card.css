@@ -43,3 +43,17 @@
 	background-color: red; /* For browsers that do not support gradients */
 	background-image: linear-gradient(45deg, #7e1300, #440000);
 }
+
+@media only screen and (max-width: 600px) {
+	.question-card {
+		margin-bottom: 5px;
+	}
+	.answers {
+		display: flex;
+		flex-direction: column;
+	}
+	.answer {
+		height: auto;
+		min-height: 40px;
+	}
+}

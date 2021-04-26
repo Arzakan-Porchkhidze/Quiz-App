@@ -1,5 +1,4 @@
 .App {
-	height: 100vh;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -69,12 +68,14 @@
 .final-score {
 	color: #d3d3d3;
 	font-size: 48px;
+	text-align: center;
 	letter-spacing: 0.3rem;
 }
 
 .error {
 	color: white;
 	letter-spacing: 0.2rem;
+	text-align: center;
 }
 
 .loading-spinner {
@@ -97,5 +98,27 @@
 @-webkit-keyframes spin {
 	to {
 		-webkit-transform: rotate(360deg);
+	}
+}
+
+@media only screen and (min-width: 1920px) {
+	.App {
+		width: 1920px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.question-card-wrapper {
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.question-card-wrapper {
+		width: 90%;
+	}
+	.next {
+		width: 100%;
+		margin: 15px 0px;
 	}
 }
