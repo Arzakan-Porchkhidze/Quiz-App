@@ -29,6 +29,8 @@ const App: React.FC = () => {
 	const [score, setScore] = useState(0);
 	const [gameOver, setGameOver] = useState(true);
 	const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
+	const [restart, setRestart] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	interface Question {
 		category: string;
@@ -48,7 +50,6 @@ const App: React.FC = () => {
 			selectedCategory ? `&category=${selectedCategory}` : ""
 		}&difficulty=${selectedDifficulty}&type=multiple`;
 		const data = await (await fetch(url)).json();
-		console.log(data);
 		return data.results.map((question: Question) => ({
 			...question,
 			answers: shuffleArray([
@@ -59,23 +60,22 @@ const App: React.FC = () => {
 	};
 
 	const startQuiz = async () => {
+		setLoading(true);
 		setGameOver(false);
 		const newQuestions = await fetchQestions();
 		setQuestions(newQuestions);
 		setScore(0);
 		setquestionNumber(0);
 		setUserAnswers([]);
-		console.log(newQuestions);
+		setLoading(false);
 	};
 
 	const selectDifficulty = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSelectedDifficulty(e.target.value);
-		console.log(e.target.value);
 	};
 
 	const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSelectedCategory(e.target.value);
-		console.log(e.target.value);
 	};
 
 	const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,6 +97,9 @@ const App: React.FC = () => {
 			};
 			setUserAnswers((prev) => [...prev, answerObject]);
 		}
+		if (questionNumber === TOTAL_QUESTIONS - 1) {
+			setRestart(true);
+		}
 	};
 
 	const nextQuestion = () => {
@@ -108,6 +111,11 @@ const App: React.FC = () => {
 		} else {
 			setquestionNumber(nextQ);
 		}
+	};
+
+	const handleRestart = () => {
+		setRestart(false);
+		setGameOver(true);
 	};
 
 	return (
@@ -126,9 +134,18 @@ const App: React.FC = () => {
 					</button>
 				</>
 			)}
-			{!gameOver ? <p className="score">Score: {score}</p> : null}
+			{!gameOver && !restart ? <p className="score">Score: {score}</p> : null}
+			{loading ? <div className="loading-spinner"></div> : null}
+			{!gameOver && restart ? (
+				<h2 className="final-score">Your score was {score}</h2>
+			) : null}
+			{restart ? (
+				<button className="restart" onClick={handleRestart}>
+					&#8634;
+				</button>
+			) : null}
 			<div className="question-card-wrapper">
-				{questions.length > 0 && (
+				{!gameOver && !loading && questions.length > 0 && !restart ? (
 					<QuestionCard
 						totalQuestions={TOTAL_QUESTIONS}
 						question={questions[questionNumber].question}
@@ -137,7 +154,7 @@ const App: React.FC = () => {
 						questionNumber={questionNumber + 1}
 						userAnswer={userAnswers ? userAnswers[questionNumber] : null}
 					/>
-				)}
+				) : null}
 				{!gameOver &&
 				userAnswers.length === questionNumber + 1 &&
 				questionNumber !== TOTAL_QUESTIONS - 1 ? (

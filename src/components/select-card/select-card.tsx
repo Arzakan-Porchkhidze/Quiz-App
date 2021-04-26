@@ -23,10 +23,12 @@ const SelectCard: React.FC<Props> = ({
 		const cateogriesUrl = "https://opentdb.com/api_category.php";
 		const fetchCategories = async () => {
 			const returnedCategories = await (await fetch(cateogriesUrl)).json();
-			console.log();
 			setCategories(returnedCategories.trivia_categories);
 		};
 		fetchCategories();
+		return function cleanUp() {
+			setCategories([]);
+		};
 	}, []);
 	return (
 		<div className="select-card">
